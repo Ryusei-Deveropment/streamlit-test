@@ -24,7 +24,7 @@ placeholder3 = st.empty()
 placeholder4 = st.empty()
 placeholder5 = st.empty()
 
-#streamlit run c:/Users/nissh/OneDrive/デスクトップ/MyPython/KivyTest/streamlit_roop.py
+#streamlit run c:\Users\nissh\OneDrive\デスクトップ\EV\esp32\調整用\Streamlit\main.py
 
 
 
@@ -41,11 +41,11 @@ spread_sheet_key = "15QFzP2mnyo36nGmwGIttfap5z7WbUGmjdX5TLRgWl-A"
 ws = connect_gspread(jsonf,spread_sheet_key)
 
 v_list = ws.col_values(3)
-v_list_f = [int(s) for s in v_list]
+v_list_f = [float(s) for s in v_list]
 c_list = ws.col_values(2)
-c_list_f = [int(s) for s in c_list]
+c_list_f = [float(s) for s in c_list]
 w_list = ws.col_values(4)
-w_list_f = [int(s) for s in w_list]
+w_list_f = [float(s) for s in w_list]
 #index = []
 
 #i = 1
