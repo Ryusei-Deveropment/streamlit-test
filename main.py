@@ -41,8 +41,11 @@ spread_sheet_key = "15QFzP2mnyo36nGmwGIttfap5z7WbUGmjdX5TLRgWl-A"
 ws = connect_gspread(jsonf,spread_sheet_key)
 
 v_list = ws.col_values(3)
+v_list_f = [int(s) for s in v_list]
 c_list = ws.col_values(2)
+c_list_f = [int(s) for s in c_list]
 w_list = ws.col_values(4)
+w_list_f = [int(s) for s in w_list]
 #index = []
 
 #i = 1
@@ -53,30 +56,30 @@ while True:
     rows_index = len(one_list)
     values_list = ws.row_values(rows_index)
 
-    v_value = values_list[2]
-    c_value = values_list[1]
-    w_value = values_list[3]
+    v_value = float(values_list[2])
+    c_value = float(values_list[1])
+    w_value = float(values_list[3])
     lat_value = values_list[4]
     lng_value = values_list[5]
 
-    v_list.append(v_value)
-    c_list.append(c_value)
-    w_list.append(w_value)
+    v_list_f.append(v_value)
+    c_list_f.append(c_value)
+    w_list_f.append(w_value)
     #index.append(i)
 
     data_dic = {
-        '電圧': v_list,
-        '電流': c_list,
-        '電力': w_list
+        '電圧': v_list_f,
+        '電流': c_list_f,
+        '電力': w_list_f
     }
     v_data = {
-        '電圧': v_list
+        '電圧': v_list_f
     }
     c_data = {
-        '電流': c_list
+        '電流': c_list_f
     }
     w_data = {
-        '電力': w_list
+        '電力': w_list_f
     }
     df = pd.DataFrame(data=data_dic)
     df_v = pd.DataFrame(data=v_data)
