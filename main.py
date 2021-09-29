@@ -106,9 +106,6 @@ while True:
     img = Image.open(file)
 
     with placeholder1:
-        st.write("""
-        # 現在地
-        """)
         st.image(img)
     
     with placeholder2:
