@@ -21,14 +21,17 @@ st.write("""
 """)  
 
 placeholder0 = st.empty()
-placeholder1 = st.empty()
+placeholder1 = st.empty() 
 placeholder6 = st.empty()
 placeholder2 = st.empty()
 placeholder3 = st.empty()
 placeholder4 = st.empty()
 placeholder5 = st.empty()
-
-#streamlit run c:\Users\nissh\OneDrive\デスクトップ\EV\esp32\調整用\Streamlit\main.py
+placeholder6 = st.empty()
+placeholder7 = st.empty()
+placeholder8 = st.empty()
+placeholder9 = st.empty()
+#streamlit run C:\Users\nissh\OneDrive\デスクトップ\EV\esp32\調整用\修正1023\main.py
 
 
 
@@ -46,33 +49,41 @@ ws = connect_gspread(jsonf,spread_sheet_key)
 
 v_list = ws.col_values(3)
 v_list_f = [float(s) for s in v_list]
+time.sleep(1.0)
 c_list = ws.col_values(2)
 c_list_f = [float(s) for s in c_list]
+time.sleep(1.0)
 w_list = ws.col_values(4)
 w_list_f = [float(s) for s in w_list]
+time.sleep(1.0)
+
+current_sum_list = ws.col_values(8)
+current_sum_list_f = [float(s) for s in current_sum_list]
+time.sleep(1.0)
+
 thou_c_list_f = [int(1000*s) for s in c_list_f]
 start_time = str(ws.acell('A1').value)
 dt1 = datetime.datetime.strptime(start_time, '%Y/%m/%d %H:%M:%S')
 time_list = ws.col_values(1)
 
-sum1 = 0
-current_sum_list = []
-for i in range(len(c_list_f)):
-    date = datetime.datetime.strptime(time_list[i-1], '%Y/%m/%d %H:%M:%S')
-    delta = date - dt1
-    date_seconds = delta.seconds
-    sum1 = sum1 + thou_c_list_f[i-1]
-    if i == 0:
-        ave1 = sum1
-    else:
-        ave1 = sum1/i
-    cursum = ave1*(date_seconds/3600)
-    current_sum_list.append(cursum/1000)
+#sum1 = 0
+#current_sum_list = []
+#for i in range(len(c_list_f)):
+#    date = datetime.datetime.strptime(time_list[i-1], '%Y/%m/%d %H:%M:%S')
+#    delta = date - dt1
+#    date_seconds = delta.seconds
+#    sum1 = sum1 + thou_c_list_f[i-1]
+#    if i == 0:
+#        ave1 = sum1
+#    else:
+#        ave1 = sum1/i
+#    cursum = ave1*(date_seconds/3600)
+#    current_sum_list.append(cursum/1000)
 #index = []
  
 #i = 1
 
-
+time.sleep(2.0)
 while True:
 
     one_list = ws.col_values(1)
@@ -84,6 +95,8 @@ while True:
         continue
     c_value = float(values_list[1])
     w_value = float(values_list[3])
+    current_sum_value = float(values_list[8])
+    battery_left = float(values_list[7])
     lat_value = values_list[4]
     lng_value = values_list[5]
     end_time = str(values_list[0])
@@ -94,14 +107,14 @@ while True:
     v_list_f.append(v_value)
     c_list_f.append(c_value)
     w_list_f.append(w_value)
-    thou_c_list_f.append(int(c_value*1000))
+    current_sum_list_f.append(current_sum_value)
+    #thou_c_list_f.append(int(c_value*1000))
 
-    sum1 = sum(thou_c_list_f)
-    ave1 = sum1/rows_index
-    print(date_seconds)
-    print(ave1)
-    cursum = ave1*(date_seconds/3600)
-    current_sum_list.append(cursum/1000)
+    #sum1 = sum(thou_c_list_f)
+    #ave1 = sum1/rows_index
+    #print(date_seconds)
+    #cursum = ave1*(date_seconds/3600)
+    #current_sum_list.append(cursum/1000)
     
     #index.append(i)
 
@@ -123,7 +136,7 @@ while True:
     }
     sum_c_data = {
         '電圧': v_list_f,
-        '積算電流': current_sum_list
+        '積算電流': current_sum_list_f
     }
     df = pd.DataFrame(data=data_dic)
     df_v = pd.DataFrame(data=v_data)
@@ -156,33 +169,39 @@ while True:
         st.write("""
         ## 経過時間
         """)  
-        st.write(time_difference)
-        st.write("積算：" + str(int(cursum/1000)) + " mAh")
-
     with placeholder1:
+        st.write(time_difference)
+
+    with placeholder2:
+        st.write("積算：" + str(current_sum_value) + " mAh")
+    
+    with placeholder3:
+        st.write(str(battery_left) + "%")
+
+    with placeholder4:
         st.image(img)
-    with placeholder6:
+    with placeholder5:
         st.write(
             px.scatter(df_s, x='積算電流', y='電圧', title='放電曲線')
         )
     
-    with placeholder2:
+    with placeholder6:
         st.write(
             px.line(df, title="Mix")
         )
-    with placeholder3:
+    with placeholder7:
         st.write(
             px.line(df_c, title="電流")
         )
-    with placeholder4:
+    with placeholder8:
         st.write(
             px.line(df_v, title="電圧")
         )
-    with placeholder5:
+    with placeholder9:
         st.write(
             px.line(df_w, title="電力")
         )
-    time.sleep(2.0)
+    time.sleep(2.5)
     #i += 1
 
     
